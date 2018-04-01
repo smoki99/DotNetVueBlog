@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using DotNetVueBlog.Services;
 
 namespace DotNetVueBlog
 {
@@ -32,6 +33,7 @@ namespace DotNetVueBlog
             services.AddScoped(typeof(IUnitOfWork),typeof(UnitOfWork));
             services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 
+            services.AddScoped(typeof(IWheatherForecastService),typeof(WheatherForecastService));
             services.AddMvc();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetVueBlog.Models;
-using DotNetVueBlog.Repositories;
+using DotNetVueBlog.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using DotNetVueBlog.DomainModel;
 namespace DotNetVueBlog.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private readonly IGenericRepository<Wheather> _wheatherRepository;
+        private readonly IWheatherForecastService _wheatherForecastService;
 
-        public SampleDataController(IGenericRepository<Wheather> wheatherRepository)
+        public SampleDataController(IWheatherForecastService wheatherForecastService)
         {
-            _wheatherRepository = wheatherRepository;                
+            _wheatherForecastService = wheatherForecastService;                
         }
 
         private static string[] Summaries = new[]
@@ -24,41 +24,20 @@ namespace DotNetVueBlog.Controllers
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts(string ort)
+        public IEnumerable<WeatherForecastModel> WeatherForecasts(string ort)
         {
            if (!String.IsNullOrEmpty(ort) && ort.Equals("Munich", StringComparison.InvariantCultureIgnoreCase)) {
 
-               return _wheatherRepository.Get().Select(x => new WeatherForecast
-               {
-                   DateFormatted = x.DateFormatted.ToString("dd.MM.yyyy")                 ,
-                   TemperatureC = x.TemperatureC,
-                   Summary = x.Summary
-               }).ToList();
-               
+               return _wheatherForecastService.GetForecast("Munich");
            }
 
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecastModel
             {
                 DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
         }
     }
 }
