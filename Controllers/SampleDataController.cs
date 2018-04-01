@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetVueBlog.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetVueBlog.Controllers
@@ -9,6 +10,14 @@ namespace DotNetVueBlog.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
+        private readonly WheatherContext _context;
+        
+
+        public SampleDataController(WheatherContext context)
+        {
+            _context = context;                
+        }
+
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,23 +27,14 @@ namespace DotNetVueBlog.Controllers
         public IEnumerable<WeatherForecast> WeatherForecasts(string ort)
         {
            if (!String.IsNullOrEmpty(ort) && ort.Equals("Munich", StringComparison.InvariantCultureIgnoreCase)) {
-               return new List<WeatherForecast> {
-                   new WeatherForecast() {
-                       DateFormatted = "01.03.2018",
-                       TemperatureC = 25,
-                       Summary = "Heiß"
-                   },
-                   new WeatherForecast() {
-                       DateFormatted = "15.03.2018",
-                       TemperatureC = 5,
-                       Summary = "Wärmer"
-                   },
-                   new WeatherForecast() {
-                       DateFormatted = "30.03.2018",
-                       TemperatureC = -15,
-                       Summary = "Ziemlich Kalt"
-                   },
-               };
+
+               return _context.Wheather.Select(x => new WeatherForecast
+               {
+                   DateFormatted = x.DateFormatted.ToString("dd.MM.yyyy")                 ,
+                   TemperatureC = x.TemperatureC,
+                   Summary = x.Summary
+               }).ToList();
+               
            }
 
             var rng = new Random();
