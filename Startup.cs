@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetVueBlog.Models;
+using DotNetVueBlog.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -26,6 +27,10 @@ namespace DotNetVueBlog
         {
             services.AddDbContext<WheatherContext>(options =>
                 options.UseNpgsql(Environment.GetEnvironmentVariable("WheatherDB")));
+
+            services.AddScoped<DbContext, WheatherContext>();
+            services.AddScoped(typeof(IUnitOfWork),typeof(UnitOfWork));
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 
             services.AddMvc();
         }

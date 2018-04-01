@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetVueBlog.Models;
+using DotNetVueBlog.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetVueBlog.Controllers
@@ -10,12 +11,11 @@ namespace DotNetVueBlog.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private readonly WheatherContext _context;
-        
+        private readonly IGenericRepository<Wheather> _wheatherRepository;
 
-        public SampleDataController(WheatherContext context)
+        public SampleDataController(IGenericRepository<Wheather> wheatherRepository)
         {
-            _context = context;                
+            _wheatherRepository = wheatherRepository;                
         }
 
         private static string[] Summaries = new[]
@@ -28,7 +28,7 @@ namespace DotNetVueBlog.Controllers
         {
            if (!String.IsNullOrEmpty(ort) && ort.Equals("Munich", StringComparison.InvariantCultureIgnoreCase)) {
 
-               return _context.Wheather.Select(x => new WeatherForecast
+               return _wheatherRepository.Get().Select(x => new WeatherForecast
                {
                    DateFormatted = x.DateFormatted.ToString("dd.MM.yyyy")                 ,
                    TemperatureC = x.TemperatureC,
