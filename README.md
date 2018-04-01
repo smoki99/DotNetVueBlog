@@ -1,6 +1,6 @@
 # Einführung
 
-Dieser Source-Code ist für eine Blogserie unter VR-Worlds.de!
+Dieser Source-Code ist für eine Blogserie unter VR-Worlds.de!xx
 
 Die hierzu gehörenden Blog-Artikel sind:
 
