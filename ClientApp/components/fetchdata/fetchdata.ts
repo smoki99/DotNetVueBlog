@@ -1,22 +1,24 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import { WeatherForecast } from "../../types/WeatherForecast";
+import { weatherForecastServices } from '../../services/WeatherForecastServices';
+import { mapActions, mapGetters } from 'vuex';
 
-interface WeatherForecast {
-    dateFormatted: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
 
-@Component
+@Component({
+    computed: mapGetters(['forecasts']),
+    methods: mapActions({fetchWeatherForecast: 'fetchWeatherForecast'})
+  })
 export default class FetchDataComponent extends Vue {
-    forecasts: WeatherForecast[] = [];
+    fetchWeatherForecast?(): Promise<any>;
+    forecasts: WeatherForecast[];
 
     mounted() {
-        fetch('api/SampleData/WeatherForecasts?ort=Munich')
-            .then(response => response.json() as Promise<WeatherForecast[]>)
-            .then(data => {
-                this.forecasts = data;
-            });
+        if (this.fetchWeatherForecast) {
+            this.fetchWeatherForecast();
+        }
+        if (this.forecasts == null) {
+            this.forecasts = [];
+        }
     }
 }

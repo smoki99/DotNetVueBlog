@@ -6,6 +6,7 @@
     "@types/webpack-env": "^1.13.0",
     "aspnet-webpack": "^2.0.1",
     "awesome-typescript-loader": "^3.0.0",
+    "axios": "^0.18.0",
     "bootstrap": "^3.3.6",
     "css-loader": "^0.25.0",
     "event-source-polyfill": "^0.0.7",
@@ -21,7 +22,13 @@
     "vue-property-decorator": "^5.0.1",
     "vue-router": "^2.3.0",
     "vue-template-compiler": "^2.2.2",
+    "vuex": "^3.0.1",
+    "vuex-class": "^0.3.0",
+    "vuex-typex": "^3.0.1",
     "webpack": "^2.2.0",
     "webpack-hot-middleware": "^2.12.2"
+  },
+  "dependencies": {
+    "@types/es6-promise": "^3.3.0"
   }
 }
