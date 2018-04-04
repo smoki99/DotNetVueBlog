@@ -1,26 +1,22 @@
-FROM microsoft/dotnet-nightly:2.1-sdk as builder
+FROM microsoft/dotnet:2.1-sdk-alpine
 
+# Install Nodejs
+RUN apk add --no-cache nodejs nodejs-npm libuv \  
+    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so \
+    && mkdir /usr/src \
+    && mkdir /usr/src/app
+
+# Switch Workdir
 WORKDIR /usr/src/app
 
-COPY . . 
+# Copy everything local
+COPY . .
 
-# Setup Working directory
-RUN apk add --no-cache nodejs nodejs-npm \
+# Install node packages and restore dotnet packages
+RUN npm install \  
     && dotnet restore \
-    && npm install \
-    && dotnet publish -o DotNetVueBlog -c Release -r alpine.3.6-x64
-
-# Now start the Docker Container wanted only with the runtime
-FROM microsoft/dotnet:2.1-runtime-alpine
-
-RUN apk add --no-cache libuv \
-    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so 
-
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app/DotNetVueBlog .
+    && dotnet build
 
 EXPOSE 5000
 
-CMD ["dotnet", "./DotNetVueBlog.dll"]
-
+CMD ["dotnet", "run"]  
