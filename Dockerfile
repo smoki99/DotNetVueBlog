@@ -3,7 +3,7 @@ FROM microsoft/dotnet:2.1-sdk-alpine as builder
 # Setup Working directory
 RUN mkdir /usr/src \
     && mkdir /usr/src/app \
-    apk add --no-cache nodejs nodejs-npm
+    && apk add --no-cache nodejs nodejs-npm
 
 # Switch to the Workdir
 WORKDIR /usr/src/app
