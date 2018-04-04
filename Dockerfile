@@ -10,11 +10,10 @@ WORKDIR /usr/src/app
 
 COPY . . 
 RUN dotnet restore \
-    && dotnet add package Microsoft.ApplicationInsights.AspNetCore --version 2.1.1 \
     && npm install
 
 # Now Build the c-sharp application
-RUN dotnet publish -o DotNetVueBlog
+RUN dotnet publish -o DotNetVueBlog --self-contained
 
 # Now start the Docker Container wanted only with the runtime
 FROM microsoft/dotnet:2.1-runtime-alpine
