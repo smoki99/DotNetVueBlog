@@ -13,7 +13,7 @@ RUN dotnet restore \
     && npm install
 
 # Now Build the c-sharp application
-RUN dotnet publish -o DotNetVueBlog --self-contained
+RUN dotnet publish -o DotNetVueBlog --self-contained --runtime linux-x64
 
 # Now start the Docker Container wanted only with the runtime
 FROM microsoft/dotnet:2.1-runtime-alpine
