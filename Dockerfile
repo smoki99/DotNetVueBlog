@@ -9,7 +9,7 @@ RUN mkdir /usr/src \
 WORKDIR /usr/src/app
 
 # Copy only the DotnetVueBlog.csproj since it contains all needed dotnet packages
-COPY DotnetVueBlog.csproj .
+COPY DotNetVueBlog.csproj .
 RUN dotnet restore ./DotNetVueBlog.csproj
 
 # Copy only package.json for npm install since it contains all needed node packages
@@ -18,7 +18,7 @@ RUN npm install
 
 # Now Build the c-sharp application
 COPY . . 
-RUN dotnet publih -o DotnetVueBlog
+RUN dotnet publish -o DotNetVueBlog
 
 # Now start the Docker Container wanted only with the runtime
 FROM microsoft/dotnet:2.1-2.1-runtime-alpine
