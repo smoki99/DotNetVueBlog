@@ -6,7 +6,7 @@ COPY . .
 
 # Setup Working directory
 RUN apk add --no-cache nodejs nodejs-npm \
-    && RUN dotnet restore \
+    && dotnet restore \
     && npm install \
     && dotnet publish -o DotNetVueBlog -c Release
 
