@@ -14,7 +14,7 @@ RUN apk add --no-cache nodejs nodejs-npm \
 FROM microsoft/dotnet:2.1-runtime-alpine
 
 RUN apk add --no-cache libuv \
-    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so \
+    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so 
 
 WORKDIR /usr/src/app
 
