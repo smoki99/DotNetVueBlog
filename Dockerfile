@@ -8,7 +8,7 @@ COPY . .
 RUN apk add --no-cache nodejs nodejs-npm \
     && dotnet restore \
     && npm install \
-    && dotnet publish -o DotNetVueBlog -c Release
+    && dotnet publish -o DotNetVueBlog -c Release -r alpine.3.6-x64
 
 # Now start the Docker Container wanted only with the runtime
 FROM microsoft/dotnet:2.1-runtime-alpine
