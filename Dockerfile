@@ -16,9 +16,8 @@ RUN npm install
 RUN dotnet publish -o DotNetVueBlog
 
 # Now start the Docker Container wanted only with the runtime
-FROM microsoft/dotnet:2.1-2.1-runtime-alpine
+FROM microsoft/dotnet:2.1-runtime-alpine
 
-# Install Nodejs
 RUN apk add --no-cache libuv \
     && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so \
     && mkdir /usr/src \
