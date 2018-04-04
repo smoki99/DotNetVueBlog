@@ -1,23 +1,44 @@
-FROM microsoft/dotnet:2.1-sdk-alpine
+FROM microsoft/dotnet:2.1-sdk-alpine as builder
 
-# Install Nodejs
-RUN apk add --no-cache nodejs nodejs-npm libuv \
-    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so \
-    && mkdir /usr/src \
-    && mkdir /usr/src/app
+# Setup Working directory
+RUN mkdir /usr/src \
+    && mkdir /usr/src/app \
+    apk add --no-cache nodejs nodejs-npm
 
-# Switch Workdir
+# Switch to the Workdir
 WORKDIR /usr/src/app
 
-# Copy everything local
-COPY . .
+# Copy only the DotnetVueBlog.csproj since it contains all needed dotnet packages
+COPY DotnetVueBlog.csproj .
+RUN dotnet restore ./DotnetVueBlog.csproj
 
-# Install node packages and restore dotnet packages
-RUN npm install \
-    && dotnet restore \
-    && dotnet build
+# Copy only package.json for npm install since it contains all needed node packages
+COPY package.json .
+RUN npm install
+
+# Now Build the c-sharp application
+COPY . . 
+RUN dotnet publih -o DotnetVueBlog
+
+# Now start the Docker Container wanted only with the runtime
+FROM microsoft/dotnet:2.1-2.1-runtime-alpine
+
+# Install Nodejs
+RUN apk add --no-cache nodejs libuv \
+    && ln -s /usr/lib/libuv.so.1 /usr/lib/libuv.so \
+    && mkdir /usr/src \
+    && mkdir /usr/src/app \
+    && mkdir /usr/src/app/node_modules
+
+WORKDIR /usr/src/app
+
+# Copy Only C# Build to local
+COPY --from=builder /usr/src/app/DotnetVueBlog .
+
+# Copy only node_modules local
+COPY --from=builder /usr/src/app/DotnetVueBlog/node_modules ./node_modules
 
 EXPOSE 5000
 
-CMD ["dotnet", "run"]
+CMD ["dotnet", "./DotNetVueBlog.dll"]
 
