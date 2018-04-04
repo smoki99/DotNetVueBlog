@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 
 # Copy only the DotnetVueBlog.csproj since it contains all needed dotnet packages
 COPY DotnetVueBlog.csproj .
-RUN dotnet restore ./DotnetVueBlog.csproj
+RUN dotnet restore ./DotNetVueBlog.csproj
 
 # Copy only package.json for npm install since it contains all needed node packages
 COPY package.json .
