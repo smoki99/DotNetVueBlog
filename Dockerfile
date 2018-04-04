@@ -13,8 +13,8 @@ COPY DotNetVueBlog.csproj .
 RUN dotnet restore ./DotNetVueBlog.csproj
 
 # Copy only package.json for npm install since it contains all needed node packages
-COPY package.json npm-shrinkwrap.json .
-RUN npm install
+# COPY package.json npm-shrinkwrap.json ./
+# RUN npm install
 
 # Now Build the c-sharp application
 COPY . . 
